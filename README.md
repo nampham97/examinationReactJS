@@ -6,3 +6,8 @@
 
 #### 06-04-21
 map, filter, condition for className add/remove class
+
+### Project group 1
+- how to use useState and useEffect correctly
+- basic getData, setData
+- handle with map, filter
