@@ -1,0 +1,66 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #9961ce99;
+}
+#mainSide{
+  min-height: 100vh;
+  display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#birhdatemain{
+  width: 30vw;
+  margin: 5rem 0;
+  background-color: #f5eeee;
+  box-shadow: 7px 9px #4e4848;
+  border-radius: 5px;
+  right: auto;
+  padding-bottom: 15px;
+}
+
+#bellinfo{
+  text-align: center;
+  font-family: monospace;
+  padding: 5px 5px;
+  line-height: 1.2;
+}
+
+#btnClear{
+  font-family: cursive;
+  font-size: 20px;
+  border-radius: 25% 5%;
+  width: 60%;
+  background: #8bfbfb;
+  outline: none;
+}
+#btnClear:hover{
+  background-color: #fb958b;
+}
+
+#btnRestore{
+  font-family: cursive;
+  font-size: 20px;
+  border-radius: 5% 25%;
+  width: 60%;
+  background: #8bfbfb;
+  outline: none;
+  margin-left: 10px;
+}
+#btnRestore:hover{
+  background-color: #83ce21;
+}
+
+
+.warmRestore{
+  text-align: center;
+  display: none;
+}
+.showWarn{
+  display: inline!important;
+}
