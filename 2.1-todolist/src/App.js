@@ -1,16 +1,25 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import List from './List'
 import Alert from './Alert'
 
 function App() {
 
-  const [listTodo, setListTodo] = useState([]);
+  const getListItemFromLocal = () =>{
+    const list = localStorage.getItem('listTodoStore');
+    if(list){
+      return JSON.parse(list);
+    }else{
+      return [];
+    }
+  }
+
+  const [listTodo, setListTodo] = useState(getListItemFromLocal);
 
   const [todo, setTodo] = useState('');
   const [isEdit, setIsEdit] = useState(false);
   const [holdEdit, setHoldEdit] = useState({});
 
-  const [isValid, setValid] = useState(true);
+  const [alert, setAlert] = useState({show: false, msg: '', type: ''});
 
   const handleChange = (e) => setTodo(e.target.value);
 
@@ -44,9 +53,10 @@ function App() {
 
   const checkInputItem = (name) => name.trim().length === 0 ? false : true;
  
+  // ======= HANDLE SUBMIT =========== 
   const  handleSubmit = (e) =>{
     e.preventDefault();
-
+    //CASE EDIT
     if(isEdit){
       const newListEdit = listTodo.map( (item) => {
           console.log('holdEdit.isDisable:', holdEdit);
@@ -61,15 +71,18 @@ function App() {
       });
 
       if(checkInputItem(todo)){
-        setValid(true);
+        setAlert({show: true, msg : `Editing successfuly ${holdEdit.name} to ${todo}`, type: 'success'});
         setListTodo(newListEdit);
         setIsEdit(false);
       }else{
-        setValid(false);
+        setAlert({show: true, msg : 'Please enter something...', type: 'danger'});
+        
       }
 
 
-    }else{
+    }
+    //CASE NORMAL
+    else{
 
       const newItem = {
         id: Math.random(),
@@ -78,12 +91,13 @@ function App() {
       }
 
       if(checkInputItem(todo)){
-        setValid(true);
+        setAlert({show: true, msg : `Adding successfuly ${todo}`, type: 'success'});
         setListTodo([...listTodo, newItem]);
+        console.log('vao1');
       }else{
-        setValid(false);
+        setAlert({show: true, msg : 'Please enter something...', type: 'danger'});
+        
       }
-      
     }
     setTodo('');
    
@@ -101,6 +115,7 @@ function App() {
   const handleDelete = (id) =>{
     const newList = listTodo.filter(item => item.id !== id);
     setListTodo(newList);
+    setAlert({show: true, msg : `Delete successfuly`, type: 'success'});
 
   }
 
@@ -112,16 +127,17 @@ function App() {
     setHoldEdit({id:'', name:''});
     const obj = listTodo.find(item => item.id === holdEdit.id);
     getListChange(obj, 'DISCARD');
+    console.log('liststore:', localStorage.getItem('liststore'));
   }
 
-    //Alert here
-  useEffect( () => {
+  useEffect(() =>{
+    localStorage.setItem('listTodoStore', JSON.stringify(listTodo));
+  }, [listTodo])
 
-  }, [isValid])
 
   return <section className='section-center'>
             <div className='grocery-form'>
-                {!isValid && <Alert />}
+                {alert.show && <Alert {...alert} list={listTodo} stateSetAlert={setAlert}/>}
                 <h3 className='title'>Todo-List</h3>
             </div>
             <form onSubmit={handleSubmit}>
