@@ -7,7 +7,13 @@ function App() {
   const getListItemFromLocal = () =>{
     const list = localStorage.getItem('listTodoStore');
     if(list){
-      return JSON.parse(list);
+      const list_parse = JSON.parse(list);
+      return list_parse.map((ele) => (
+        {
+          ...ele,
+          "isDisable":false
+        }
+      ))
     }else{
       return [];
     }
@@ -115,6 +121,10 @@ function App() {
   const handleDelete = (id) =>{
     const newList = listTodo.filter(item => item.id !== id);
     setListTodo(newList);
+    if(holdEdit.id === id){
+      setIsEdit(false);
+      setTodo('');
+    }
     setAlert({show: true, msg : `Delete successfuly`, type: 'success'});
 
   }
@@ -138,7 +148,7 @@ function App() {
   return <section className='section-center'>
             <div className='grocery-form'>
                 {alert.show && <Alert {...alert} list={listTodo} stateSetAlert={setAlert}/>}
-                <h3 className='title'>Todo-List</h3>
+                <h3 className='title'>What I do today!</h3>
             </div>
             <form onSubmit={handleSubmit}>
                 <div className='form-control'>
@@ -149,14 +159,14 @@ function App() {
             </form>
             <article className='grocery-container'>
                 {
-                  listTodo.length > 0 && 
+                  listTodo.length > 0 &&
                   listTodo.map( (item) =>(
                     <List key={item.id} {...item} handleEdit={handleEdit} handleDelete={handleDelete} />
                   ))
                 }
             </article>
             {
-              listTodo.length > 0 &&  
+              listTodo.length > 0 &&
               <article className='grocery-container'>
                     <button className="clear-btn" onClick={handleClear}>Clears all</button>
               </article>
